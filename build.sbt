@@ -1,8 +1,8 @@
 name := "zookeeper-client"
 
-version := "2.0.0_fs-cphy-b"
+version := "2.0.0_fs-cphy-b-SNAPSHOT"
 
-organization := "com.twitter"
+organization := "org.cphylabs"
 
 scalaVersion := "2.10.1"
 
@@ -27,3 +27,18 @@ libraryDependencies +=
   )
 
 licenses += ("Apache 2", url("http://www.apache.org/licenses/LICENSE-2.0.txt</url>"))
+
+/* publishing */
+publishTo <<= version { (v: String) =>
+  val artifactory = "http://cloudphysics.artifactoryonline.com/cloudphysics/"
+  if (v.trim.endsWith("SNAPSHOT")) Some(
+    "cphy oss snapshots" at artifactory + "oss-snapshots-local"
+  )
+  else Some(
+    "cphy oss releases" at artifactory + "oss-releases-local"
+  )
+}
+
+publishArtifact in Test := false
+
+credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
